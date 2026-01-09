@@ -47,4 +47,10 @@ export default defineConfig([
       '**/vendor/**',
     ],
   },
+  {
+    files: ['**/*.entity.ts'],
+    rules: {
+      '@typescript-eslint/explicit-member-accessibility': 'off',
+    },
+  },
 ]);
