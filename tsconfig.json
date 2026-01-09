@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": "."
+  },
+  "include": [
+    "./src",
+    "./test",
+    "./eslint.config.ts",
+    "./jest.config.ts",
+    "./.release-it.ts"
+  ]
+}

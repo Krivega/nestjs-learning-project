@@ -1,0 +1,91 @@
+{
+  "name": "nestjs-learning-project",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "license": "UNLICENSED",
+  "author": {
+    "name": "Krivega Dmitriy",
+    "email": "mr.krivega@gmail.com",
+    "url": "https://krivega.com"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "nest build",
+    "lint": "npm run lint:ts && npm run lint:js",
+    "lint:js": "eslint --report-unused-disable-directives --max-warnings 0 --cache --cache-strategy=content",
+    "lint:ts": "tsc",
+    "prepare": "husky",
+    "prepublishOnly": "npm run build",
+    "release": "release-it",
+    "start": "nest start",
+    "start:debug": "nest start --debug --watch",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main",
+    "test": "jest",
+    "test:ci": "cross-env CI=true jest --passWithNoTests",
+    "test:cov": "jest --coverage",
+    "test:coverage": "npm run test:ci --coverage --reporters=default --reporters=jest-junit",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.11",
+    "@nestjs/core": "^11.1.11",
+    "@nestjs/platform-express": "^11.1.11",
+    "@nestjs/typeorm": "^11.0.0",
+    "pg": "^8.16.3",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "typeorm": "^0.3.28"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.3.0",
+    "@commitlint/config-conventional": "^20.3.0",
+    "@eslint/compat": "^2.0.0",
+    "@eslint/eslintrc": "^3.3.3",
+    "@eslint/js": "^9.39.2",
+    "@krivega/eslint-config": "^1.1.5",
+    "@nestjs/cli": "^11.0.14",
+    "@nestjs/schematics": "^11.0.9",
+    "@nestjs/testing": "^11.1.11",
+    "@release-it/conventional-changelog": "^10.0.4",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.0.3",
+    "@types/supertest": "^6.0.3",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.39.2",
+    "globals": "^17.0.0",
+    "husky": "^9.1.7",
+    "jest": "^30.2.0",
+    "jest-extended": "^7.0.0",
+    "jest-junit": "^16.0.0",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4",
+    "release-it": "^19.2.3",
+    "source-map-support": "^0.5.21",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.6",
+    "ts-loader": "^9.5.4",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
+    "tsc-files": "^1.1.4",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.52.0"
+  }
+}
