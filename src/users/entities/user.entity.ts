@@ -1,3 +1,4 @@
+import { Contains, Length } from 'class-validator';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
@@ -6,11 +7,10 @@ export class User {
   id!: number;
 
   @Column()
-  firstName!: string;
+  @Length(10, 20)
+  name!: string;
 
   @Column()
-  lastName!: string;
-
-  @Column()
-  isActive!: boolean;
+  @Contains('hello')
+  about!: string;
 }
