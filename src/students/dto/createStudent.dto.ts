@@ -1,5 +1,9 @@
-export class CreateStudentDto {
-  id!: number;
+import { ApiProperty } from '@nestjs/swagger';
 
+export class CreateStudentDto {
+  @ApiProperty()
   name!: string;
+
+  @ApiProperty()
+  balance!: number;
 }

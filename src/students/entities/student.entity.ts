@@ -1,3 +1,4 @@
+import { IsInt, Min } from 'class-validator';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
@@ -7,4 +8,9 @@ export class Student {
 
   @Column()
   name!: string;
+
+  @Column()
+  @IsInt()
+  @Min(0)
+  balance!: number;
 }

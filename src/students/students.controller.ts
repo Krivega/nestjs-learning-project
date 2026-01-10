@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 
 import { CreateStudentDto } from './dto/createStudent.dto';
+import { TransferBalanceDto } from './dto/transferBalance.dto';
 import { UpdateStudentDto } from './dto/updateStudent.dto';
 import { Student } from './entities/student.entity';
 import { StudentsService } from './students.service';
@@ -52,5 +53,20 @@ export class StudentsController {
     }
 
     await this.studentsService.updateById(id, student);
+  }
+
+  @Post('transfer')
+  public async transfer(
+    @Body() transferData: TransferBalanceDto,
+  ): Promise<boolean> {
+    const { from, to, amount } = transferData;
+    const fromStudent = await this.studentsService.findById(from);
+    const toStudent = await this.studentsService.findById(to);
+
+    if (fromStudent === null || toStudent === null) {
+      throw new NotFoundException();
+    }
+
+    return this.studentsService.transferClasses(fromStudent, toStudent, amount);
   }
 }
