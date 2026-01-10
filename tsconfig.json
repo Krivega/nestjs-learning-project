@@ -9,6 +9,7 @@
     "./test",
     "./eslint.config.ts",
     "./jest.config.ts",
-    "./.release-it.ts"
+    "./.release-it.ts",
+    "./ormconfig.ts"
   ]
 }

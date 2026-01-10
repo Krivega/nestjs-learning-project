@@ -24,11 +24,15 @@
   ],
   "scripts": {
     "build": "nest build",
-    "lint": "npm run lint:ts && npm run lint:js",
+    "lint": "yarn lint:ts && yarn lint:js",
     "lint:js": "eslint --report-unused-disable-directives --max-warnings 0 --cache --cache-strategy=content",
     "lint:ts": "tsc",
+    "migrate:create": "yarn typeorm migration:create -n",
+    "migrate:down": "yarn typeorm migration:revert",
+    "migrate:generate": "yarn typeorm migration:generate -n",
+    "migrate:up": "yarn typeorm migration:run",
     "prepare": "husky",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "yarn build",
     "release": "release-it",
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
@@ -37,10 +41,11 @@
     "test": "jest",
     "test:ci": "cross-env CI=true jest --passWithNoTests",
     "test:cov": "jest --coverage",
-    "test:coverage": "npm run test:ci --coverage --reporters=default --reporters=jest-junit",
+    "test:coverage": "yarn test:ci --coverage --reporters=default --reporters=jest-junit",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "typeorm": "ts-node --files -r tsconfig-paths/register ./node_modules/typeorm/cli.js --dataSource ormconfig.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.11",
