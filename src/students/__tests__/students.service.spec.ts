@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { DataSource } from 'typeorm';
 
 import { Student } from '../entities/student.entity';
@@ -23,6 +24,14 @@ describe('StudentsService', () => {
       createQueryRunner: jest.fn().mockReturnValue(mockQueryRunner),
     };
 
+    const mockLogger = {
+      error: jest.fn(),
+      warn: jest.fn(),
+      info: jest.fn(),
+      debug: jest.fn(),
+      verbose: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         StudentsService,
@@ -39,6 +48,10 @@ describe('StudentsService', () => {
             delete: jest.fn(),
             update: jest.fn(),
           },
+        },
+        {
+          provide: WINSTON_MODULE_PROVIDER,
+          useValue: mockLogger,
         },
       ],
     }).compile();
