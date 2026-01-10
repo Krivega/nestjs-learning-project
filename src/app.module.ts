@@ -5,6 +5,7 @@ import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import configuration, { schema } from '@/configuration';
 import { DatabaseModule } from '@/database/database.module';
+import { LoggerModule } from '@/logger/logger.module';
 import { StudentsModule } from '@/students/students.module';
 
 @Module({
@@ -13,6 +14,7 @@ import { StudentsModule } from '@/students/students.module';
       validationSchema: schema,
       load: [configuration],
     }),
+    LoggerModule,
     DatabaseModule,
     StudentsModule,
   ],

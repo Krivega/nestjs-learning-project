@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { DataSource, Repository } from 'typeorm';
+import { Logger } from 'winston';
 
 import { CreateStudentDto } from './dto/createStudent.dto';
 import { UpdateStudentDto } from './dto/updateStudent.dto';
@@ -9,9 +11,8 @@ import { Student } from './entities/student.entity';
 
 @Injectable()
 export class StudentsService {
-  private readonly logger = new Logger(StudentsService.name);
-
   public constructor(
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
     private readonly dataSource: DataSource,
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>,
@@ -62,10 +63,12 @@ export class StudentsService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
-    this.logger.log('Состояние до операции');
-    this.logger.log(`Баланс отправителя ${sender.name} - ${sender.balance}`);
-    this.logger.log(`Баланс получателя ${receiver.name} - ${receiver.balance}`);
-    this.logger.log(
+    this.logger.debug('Состояние до операции');
+    this.logger.debug(`Баланс отправителя ${sender.name} - ${sender.balance}`);
+    this.logger.debug(
+      `Баланс получателя ${receiver.name} - ${receiver.balance}`,
+    );
+    this.logger.debug(
       `Пытаемся перевести ${amount} от ${sender.name} к ${receiver.name}`,
     );
 
@@ -73,13 +76,17 @@ export class StudentsService {
       // Исправлена логика перевода: отправитель отдает, получатель получает
       sender.balance -= amount;
       receiver.balance += amount;
-      this.logger.log('Сохраняем изменения в БД');
+      this.logger.debug('Сохраняем изменения в БД');
       // Используем queryRunner.manager для работы в рамках транзакции
       await queryRunner.manager.save(sender);
       await queryRunner.manager.save(receiver);
-      this.logger.log('Операция произошла успешно. Текущее состояние балансов');
-      this.logger.log(`Баланс отправителя ${sender.name} - ${sender.balance}`);
-      this.logger.log(
+      this.logger.debug(
+        'Операция произошла успешно. Текущее состояние балансов',
+      );
+      this.logger.debug(
+        `Баланс отправителя ${sender.name} - ${sender.balance}`,
+      );
+      this.logger.debug(
         `Баланс получателя ${receiver.name} - ${receiver.balance}`,
       );
 
