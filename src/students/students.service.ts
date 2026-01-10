@@ -18,4 +18,12 @@ export class StudentsService {
   public async create(student: Student): Promise<Student> {
     return this.studentRepository.save(student);
   }
+
+  public async findById(id: number): Promise<Student | null> {
+    return this.studentRepository.findOneBy({ id });
+  }
+
+  public async removeById(id: number) {
+    return this.studentRepository.delete({ id });
+  }
 }

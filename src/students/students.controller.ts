@@ -1,5 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Delete,
+  Param,
+  ParseIntPipe,
+  NotFoundException,
+} from '@nestjs/common';
 
+import { CreateStudentDto } from './dto/createStudent.dto';
 import { Student } from './entities/student.entity';
 import { StudentsService } from './students.service';
 
@@ -10,5 +20,21 @@ export class StudentsController {
   @Get()
   public async findAll(): Promise<Student[]> {
     return this.studentsService.findAll();
+  }
+
+  @Post()
+  public async create(@Body() student: CreateStudentDto): Promise<Student> {
+    return this.studentsService.create(student);
+  }
+
+  @Delete(':id')
+  public async removeById(@Param('id', ParseIntPipe) id: number) {
+    const isExist = await this.studentsService.findById(id);
+
+    if (isExist === null) {
+      throw new NotFoundException();
+    }
+
+    await this.studentsService.removeById(id);
   }
 }

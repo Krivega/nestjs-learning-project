@@ -48,7 +48,7 @@ export default defineConfig([
     ],
   },
   {
-    files: ['**/*.entity.ts'],
+    files: ['**/*.entity.ts', '**/*.dto.ts'],
     rules: {
       '@typescript-eslint/explicit-member-accessibility': 'off',
     },
