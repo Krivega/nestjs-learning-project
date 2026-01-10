@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { UpdateStudentDto } from './dto/updateStudent.dto';
 import { Student } from './entities/student.entity';
 
 @Injectable()
@@ -25,5 +26,9 @@ export class StudentsService {
 
   public async removeById(id: number) {
     return this.studentRepository.delete({ id });
+  }
+
+  public async updateById(id: number, updateStudentDto: UpdateStudentDto) {
+    return this.studentRepository.update({ id }, updateStudentDto);
   }
 }
