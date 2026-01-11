@@ -1,3 +1,4 @@
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Test } from '@nestjs/testing';
 
 import { StudentsController } from '../students.controller';
@@ -9,15 +10,31 @@ describe('StudentsController', () => {
   let controller: StudentsController;
 
   beforeEach(async () => {
+    const mockCacheManager = {
+      set: jest.fn(),
+      get: jest.fn(),
+      del: jest.fn(),
+    };
+
+    const mockStudentsService = {
+      findAll: jest.fn(),
+      create: jest.fn(),
+      findById: jest.fn(),
+      removeById: jest.fn(),
+      updateById: jest.fn(),
+      transferClasses: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [StudentsController],
       providers: [
         {
+          provide: CACHE_MANAGER,
+          useValue: mockCacheManager,
+        },
+        {
           provide: StudentsService,
-          useValue: {
-            findAll: jest.fn(),
-            create: jest.fn(),
-          },
+          useValue: mockStudentsService,
         },
       ],
     }).compile();

@@ -1,3 +1,4 @@
+import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
@@ -17,6 +18,7 @@ import { StudentsModule } from '@/students/students.module';
     LoggerModule,
     DatabaseModule,
     StudentsModule,
+    CacheModule.register(),
   ],
   controllers: [AppController],
   providers: [AppService],
