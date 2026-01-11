@@ -1,4 +1,9 @@
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import {
+  CACHE_MANAGER,
+  CacheInterceptor,
+  CacheKey,
+  CacheTTL,
+} from '@nestjs/cache-manager';
 import {
   Controller,
   Get,
@@ -10,6 +15,7 @@ import {
   NotFoundException,
   Patch,
   Inject,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { StudentsService } from './students.service';
@@ -24,13 +30,19 @@ const getCacheKey = (id: number) => {
   return `users:${id}`;
 };
 
+const ALL_CACHE_KEY = 'all_students';
+
 @Controller('students')
+@UseInterceptors(CacheInterceptor)
 export class StudentsController {
   public constructor(
     @Inject(CACHE_MANAGER) private readonly cache: TCacheManager,
     private readonly studentsService: StudentsService,
   ) {}
 
+  @CacheKey(ALL_CACHE_KEY)
+  @CacheTTL(50)
+  @Get()
   @Get()
   public async findAll(): Promise<Student[]> {
     return this.studentsService.findAll();
@@ -103,6 +115,7 @@ export class StudentsController {
   private async invalidateCache(id: number) {
     const cacheKey = getCacheKey(id);
 
-    return this.cache.del(cacheKey);
+    await this.cache.del(ALL_CACHE_KEY);
+    await this.cache.del(cacheKey);
   }
 }
