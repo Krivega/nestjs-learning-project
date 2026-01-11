@@ -1,5 +1,6 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Test } from '@nestjs/testing';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 import { StudentsController } from '../students.controller';
 import { StudentsService } from '../students.service';
@@ -37,7 +38,14 @@ describe('StudentsController', () => {
           useValue: mockStudentsService,
         },
       ],
-    }).compile();
+    })
+      .overrideGuard(ThrottlerGuard)
+      .useValue({
+        canActivate: jest.fn(() => {
+          return true;
+        }),
+      })
+      .compile();
 
     controller = module.get<StudentsController>(StudentsController);
   });
