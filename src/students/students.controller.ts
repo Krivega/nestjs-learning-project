@@ -16,7 +16,9 @@ import {
   Patch,
   Inject,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 import { StudentsService } from './students.service';
 
@@ -33,6 +35,7 @@ const getCacheKey = (id: number) => {
 const ALL_CACHE_KEY = 'all_students';
 
 @Controller('students')
+@UseGuards(ThrottlerGuard)
 @UseInterceptors(CacheInterceptor)
 export class StudentsController {
   public constructor(
