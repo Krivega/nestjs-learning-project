@@ -1,4 +1,4 @@
-import { IsInt, Min } from 'class-validator';
+import { IsInt, Min, IsString, IsNotEmpty, MinLength } from 'class-validator';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
@@ -7,7 +7,15 @@ export class User {
   id!: number;
 
   @Column()
+  @IsString()
+  @IsNotEmpty()
   name!: string;
+
+  @Column()
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(6)
+  password!: string;
 
   @Column()
   about!: string;
