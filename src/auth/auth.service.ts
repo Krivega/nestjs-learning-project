@@ -12,7 +12,7 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
-  public auth(user: { id: string }) {
+  public auth(user: { id: number }) {
     const payload = { sub: user.id };
 
     return { access_token: this.jwtService.sign(payload) };

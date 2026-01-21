@@ -13,5 +13,5 @@ export class UpdateUserDto {
   public about!: string;
 
   @ApiProperty()
-  public id!: string;
+  public id!: number;
 }

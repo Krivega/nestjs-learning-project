@@ -38,7 +38,7 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  public async findById(id: string) {
+  public async findById(id: number) {
     const user = await this.usersRepository.findOneBy({ id });
 
     return user;
@@ -56,11 +56,11 @@ export class UsersService {
     return user;
   }
 
-  public async removeById(id: string) {
+  public async removeById(id: number) {
     return this.usersRepository.delete({ id });
   }
 
-  public async updateById(id: string, updateUserDto: UpdateUserDto) {
+  public async updateById(id: number, updateUserDto: UpdateUserDto) {
     return this.usersRepository.update({ id }, updateUserDto);
   }
 

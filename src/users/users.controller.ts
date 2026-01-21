@@ -16,6 +16,7 @@ import {
   Inject,
   UseInterceptors,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
@@ -27,7 +28,7 @@ import type { TransferBalanceDto } from './dto/transferBalance.dto';
 import type { UpdateUserDto } from './dto/updateUser.dto';
 import type { User } from './entities/user.entity';
 
-const getCacheKey = (id: string) => {
+const getCacheKey = (id: number) => {
   return `users:${id}`;
 };
 
@@ -56,7 +57,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  public async removeById(@Param('id') id: string) {
+  public async removeById(@Param('id', ParseIntPipe) id: number) {
     const isExist = await this.usersService.findById(id);
 
     if (isExist === null) {
@@ -68,7 +69,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  public async findById(@Param('id') id: string) {
+  public async findById(@Param('id', ParseIntPipe) id: number) {
     const cacheKey = getCacheKey(id);
 
     const cachedUser = await this.cache.get<User>(cacheKey);
@@ -86,7 +87,7 @@ export class UsersController {
 
   @Patch(':id')
   public async updateById(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() user: UpdateUserDto,
   ) {
     const isExist = await this.usersService.findById(id);
@@ -114,7 +115,7 @@ export class UsersController {
     return this.usersService.transferClasses(fromUser, toUser, amount);
   }
 
-  private async invalidateCache(id: string) {
+  private async invalidateCache(id: number) {
     const cacheKey = getCacheKey(id);
 
     await this.cache.del(ALL_CACHE_KEY);

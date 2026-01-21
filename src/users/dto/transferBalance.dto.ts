@@ -2,10 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class TransferBalanceDto {
   @ApiProperty()
-  from!: string;
+  from!: number;
 
   @ApiProperty()
-  to!: string;
+  to!: number;
 
   @ApiProperty()
   amount!: number;

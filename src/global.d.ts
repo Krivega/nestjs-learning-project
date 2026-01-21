@@ -1,7 +1,7 @@
 /// <reference types="jest" />
 
 export interface JwtUser {
-  id: string;
+  id: number;
   username: string;
   password: string;
   about: string;

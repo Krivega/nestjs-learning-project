@@ -6,24 +6,27 @@ import {
   MinLength,
   IsEmail,
   IsOptional,
+  IsEnum,
 } from 'class-validator';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id!: string;
+  id!: number;
 
   @Column({ type: 'enum', enum: ['local', 'oauth'], default: 'local' })
+  @IsOptional()
+  @IsEnum(['local', 'oauth'])
   authType: 'local' | 'oauth' = 'local';
 
-  @Column()
+  @Column({ nullable: true })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
   username?: string;
 
-  @Column()
+  @Column({ nullable: true })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
@@ -31,16 +34,17 @@ export class User {
   password?: string;
 
   @Column()
-  @IsEmail()
   @IsNotEmpty()
+  @IsEmail()
   email!: string;
 
-  @Column()
+  @Column({ nullable: true })
   @IsOptional()
+  @IsString()
   about?: string;
 
-  @Column()
+  @Column({ default: 0 })
   @IsInt()
   @Min(0)
-  balance!: number;
+  balance = 0;
 }
