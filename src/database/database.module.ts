@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { Student } from '@/students/entities/student.entity';
 import { User } from '@/users/entities/user.entity';
 
 interface IDatabaseConfig {
@@ -33,7 +32,7 @@ interface IDatabaseConfig {
           username: databaseConfig.username,
           password: databaseConfig.password,
           database: databaseConfig.name,
-          entities: [User, Student],
+          entities: [User],
           synchronize: databaseConfig.synchronize,
         };
       },

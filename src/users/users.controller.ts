@@ -20,51 +20,51 @@ import {
 } from '@nestjs/common';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
-import { StudentsService } from './students.service';
+import { UsersService } from './users.service';
 
 import type { Cache as TCacheManager } from '@nestjs/cache-manager';
-import type { CreateStudentDto } from './dto/createStudent.dto';
+import type { CreateUserDto } from './dto/createUser.dto';
 import type { TransferBalanceDto } from './dto/transferBalance.dto';
-import type { UpdateStudentDto } from './dto/updateStudent.dto';
-import type { Student } from './entities/student.entity';
+import type { UpdateUserDto } from './dto/updateUser.dto';
+import type { User } from './entities/user.entity';
 
 const getCacheKey = (id: number) => {
   return `users:${id}`;
 };
 
-const ALL_CACHE_KEY = 'all_students';
+const ALL_CACHE_KEY = 'all_users';
 
-@Controller('students')
+@Controller('users')
 @UseGuards(ThrottlerGuard)
 @UseInterceptors(CacheInterceptor)
-export class StudentsController {
+export class UsersController {
   public constructor(
     @Inject(CACHE_MANAGER) private readonly cache: TCacheManager,
-    private readonly studentsService: StudentsService,
+    private readonly usersService: UsersService,
   ) {}
 
   @CacheKey(ALL_CACHE_KEY)
   @CacheTTL(50)
   @Get()
   @Get()
-  public async findAll(): Promise<Student[]> {
-    return this.studentsService.findAll();
+  public async findAll(): Promise<User[]> {
+    return this.usersService.findAll();
   }
 
   @Post()
-  public async create(@Body() student: CreateStudentDto): Promise<Student> {
-    return this.studentsService.create(student);
+  public async create(@Body() user: CreateUserDto): Promise<User> {
+    return this.usersService.create(user);
   }
 
   @Delete(':id')
   public async removeById(@Param('id', ParseIntPipe) id: number) {
-    const isExist = await this.studentsService.findById(id);
+    const isExist = await this.usersService.findById(id);
 
     if (isExist === null) {
       throw new NotFoundException();
     }
 
-    await this.studentsService.removeById(id);
+    await this.usersService.removeById(id);
     await this.invalidateCache(id);
   }
 
@@ -72,31 +72,31 @@ export class StudentsController {
   public async findById(@Param('id') id: number) {
     const cacheKey = getCacheKey(id);
 
-    const cachedStudent = await this.cache.get<Student>(cacheKey);
+    const cachedUser = await this.cache.get<User>(cacheKey);
 
-    if (cachedStudent) {
-      return cachedStudent;
+    if (cachedUser) {
+      return cachedUser;
     }
 
-    const student = await this.studentsService.findById(id);
+    const user = await this.usersService.findById(id);
 
-    await this.cache.set(cacheKey, student);
+    await this.cache.set(cacheKey, user);
 
-    return student;
+    return user;
   }
 
   @Patch(':id')
   public async updateById(
     @Param('id', ParseIntPipe) id: number,
-    @Body() student: UpdateStudentDto,
+    @Body() user: UpdateUserDto,
   ) {
-    const isExist = await this.studentsService.findById(id);
+    const isExist = await this.usersService.findById(id);
 
     if (isExist === null) {
       throw new NotFoundException();
     }
 
-    await this.studentsService.updateById(id, student);
+    await this.usersService.updateById(id, user);
     await this.invalidateCache(id);
   }
 
@@ -105,14 +105,14 @@ export class StudentsController {
     @Body() transferData: TransferBalanceDto,
   ): Promise<boolean> {
     const { from, to, amount } = transferData;
-    const fromStudent = await this.studentsService.findById(from);
-    const toStudent = await this.studentsService.findById(to);
+    const fromUser = await this.usersService.findById(from);
+    const toUser = await this.usersService.findById(to);
 
-    if (fromStudent === null || toStudent === null) {
+    if (fromUser === null || toUser === null) {
       throw new NotFoundException();
     }
 
-    return this.studentsService.transferClasses(fromStudent, toStudent, amount);
+    return this.usersService.transferClasses(fromUser, toUser, amount);
   }
 
   private async invalidateCache(id: number) {

@@ -1,4 +1,4 @@
-import { Contains, Length } from 'class-validator';
+import { IsInt, Min } from 'class-validator';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
@@ -7,10 +7,13 @@ export class User {
   id!: number;
 
   @Column()
-  @Length(10, 20)
   name!: string;
 
   @Column()
-  @Contains('hello')
   about!: string;
+
+  @Column()
+  @IsInt()
+  @Min(0)
+  balance!: number;
 }

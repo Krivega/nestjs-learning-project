@@ -8,7 +8,7 @@ import { AppService } from '@/app.service';
 import configuration, { schema } from '@/configuration';
 import { DatabaseModule } from '@/database/database.module';
 import { LoggerModule } from '@/logger/logger.module';
-import { StudentsModule } from '@/students/students.module';
+import { UsersModule } from '@/users/users.module';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { StudentsModule } from '@/students/students.module';
     }),
     LoggerModule,
     DatabaseModule,
-    StudentsModule,
+    UsersModule,
     ThrottlerModule.forRoot([
       {
         ttl: 60,

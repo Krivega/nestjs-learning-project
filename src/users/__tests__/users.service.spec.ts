@@ -3,13 +3,13 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { DataSource } from 'typeorm';
 
-import { Student } from '../entities/student.entity';
-import { StudentsService } from '../students.service';
+import { User } from '../entities/user.entity';
+import { UsersService } from '../users.service';
 
 import type { TestingModule } from '@nestjs/testing';
 
-describe('StudentsService', () => {
-  let service: StudentsService;
+describe('UsersService', () => {
+  let service: UsersService;
 
   beforeEach(async () => {
     const mockQueryRunner = {
@@ -34,13 +34,13 @@ describe('StudentsService', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        StudentsService,
+        UsersService,
         {
           provide: DataSource,
           useValue: mockDataSource,
         },
         {
-          provide: getRepositoryToken(Student),
+          provide: getRepositoryToken(User),
           useValue: {
             find: jest.fn(),
             save: jest.fn(),
@@ -56,7 +56,7 @@ describe('StudentsService', () => {
       ],
     }).compile();
 
-    service = module.get<StudentsService>(StudentsService);
+    service = module.get<UsersService>(UsersService);
   });
 
   it('should be defined', () => {

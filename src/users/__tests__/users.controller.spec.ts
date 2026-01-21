@@ -2,13 +2,13 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Test } from '@nestjs/testing';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
-import { StudentsController } from '../students.controller';
-import { StudentsService } from '../students.service';
+import { UsersController } from '../users.controller';
+import { UsersService } from '../users.service';
 
 import type { TestingModule } from '@nestjs/testing';
 
-describe('StudentsController', () => {
-  let controller: StudentsController;
+describe('UsersController', () => {
+  let controller: UsersController;
 
   beforeEach(async () => {
     const mockCacheManager = {
@@ -17,7 +17,7 @@ describe('StudentsController', () => {
       del: jest.fn(),
     };
 
-    const mockStudentsService = {
+    const mockUsersService = {
       findAll: jest.fn(),
       create: jest.fn(),
       findById: jest.fn(),
@@ -27,15 +27,15 @@ describe('StudentsController', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [StudentsController],
+      controllers: [UsersController],
       providers: [
         {
           provide: CACHE_MANAGER,
           useValue: mockCacheManager,
         },
         {
-          provide: StudentsService,
-          useValue: mockStudentsService,
+          provide: UsersService,
+          useValue: mockUsersService,
         },
       ],
     })
@@ -47,7 +47,7 @@ describe('StudentsController', () => {
       })
       .compile();
 
-    controller = module.get<StudentsController>(StudentsController);
+    controller = module.get<UsersController>(UsersController);
   });
 
   it('should be defined', () => {
