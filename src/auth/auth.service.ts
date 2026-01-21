@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 
 import { UsersService } from '@/users/users.service';
 
+import type { Profile } from 'passport-yandex';
+
 @Injectable()
 export class AuthService {
   public constructor(
@@ -34,5 +36,22 @@ export class AuthService {
     }
 
     return undefined;
+  }
+
+  public async validateFromYandex(profile: Profile) {
+    const email = profile.emails?.[0]?.value;
+
+    if (email === undefined) {
+      return undefined;
+    }
+
+    const user = await this.usersService.findByEmail(email);
+
+    /* Если пользователь не найден, создадим его */
+    if (!user) {
+      return this.usersService.createFromYandex({ email });
+    }
+
+    return user;
   }
 }

@@ -24,6 +24,16 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
+  public async createFromYandex(profile: { email: string }) {
+    const user = this.usersRepository.create({
+      email: profile.email,
+      authType: 'oauth',
+      balance: 0,
+    });
+
+    return this.usersRepository.save(user);
+  }
+
   public async findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
@@ -36,6 +46,12 @@ export class UsersService {
 
   public async findByUsername(username: string) {
     const user = await this.usersRepository.findOneBy({ username });
+
+    return user;
+  }
+
+  public async findByEmail(email: string) {
+    const user = await this.usersRepository.findOneBy({ email });
 
     return user;
   }
