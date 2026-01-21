@@ -28,23 +28,23 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  public async findById(id: number) {
+  public async findById(id: string) {
     const user = await this.usersRepository.findOneBy({ id });
 
     return user;
   }
 
-  public async findByUsername(name: string) {
-    const user = await this.usersRepository.findOneBy({ name });
+  public async findByUsername(username: string) {
+    const user = await this.usersRepository.findOneBy({ username });
 
     return user;
   }
 
-  public async removeById(id: number) {
+  public async removeById(id: string) {
     return this.usersRepository.delete({ id });
   }
 
-  public async updateById(id: number, updateUserDto: UpdateUserDto) {
+  public async updateById(id: string, updateUserDto: UpdateUserDto) {
     return this.usersRepository.update({ id }, updateUserDto);
   }
 
@@ -62,7 +62,7 @@ export class UsersService {
 
     if (sender.balance < amount) {
       this.logger.error(
-        `Недостаточно средств у отправителя ${sender.name}. Текущий баланс: ${sender.balance}, требуется: ${amount}`,
+        `Недостаточно средств у отправителя ${sender.username}. Текущий баланс: ${sender.balance}, требуется: ${amount}`,
       );
 
       return false;
@@ -74,12 +74,14 @@ export class UsersService {
     await queryRunner.startTransaction();
 
     this.logger.debug('Состояние до операции');
-    this.logger.debug(`Баланс отправителя ${sender.name} - ${sender.balance}`);
     this.logger.debug(
-      `Баланс получателя ${receiver.name} - ${receiver.balance}`,
+      `Баланс отправителя ${sender.username} - ${sender.balance}`,
     );
     this.logger.debug(
-      `Пытаемся перевести ${amount} от ${sender.name} к ${receiver.name}`,
+      `Баланс получателя ${receiver.username} - ${receiver.balance}`,
+    );
+    this.logger.debug(
+      `Пытаемся перевести ${amount} от ${sender.username} к ${receiver.username}`,
     );
 
     try {
@@ -94,10 +96,10 @@ export class UsersService {
         'Операция произошла успешно. Текущее состояние балансов',
       );
       this.logger.debug(
-        `Баланс отправителя ${sender.name} - ${sender.balance}`,
+        `Баланс отправителя ${sender.username} - ${sender.balance}`,
       );
       this.logger.debug(
-        `Баланс получателя ${receiver.name} - ${receiver.balance}`,
+        `Баланс получателя ${receiver.username} - ${receiver.balance}`,
       );
 
       await queryRunner.commitTransaction();

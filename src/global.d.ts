@@ -1,8 +1,11 @@
 /// <reference types="jest" />
 
 export interface JwtUser {
-  userId: string;
+  id: string;
   username: string;
+  password: string;
+  about: string;
+  balance: number;
 }
 
 declare global {

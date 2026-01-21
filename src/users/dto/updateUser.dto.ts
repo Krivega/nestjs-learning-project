@@ -5,7 +5,7 @@ export class UpdateUserDto {
   @ApiProperty()
   @IsString()
   @MinLength(1)
-  public name!: string;
+  public username!: string;
 
   @ApiProperty()
   @IsString()
@@ -13,5 +13,5 @@ export class UpdateUserDto {
   public about!: string;
 
   @ApiProperty()
-  public id!: number;
+  public id!: string;
 }

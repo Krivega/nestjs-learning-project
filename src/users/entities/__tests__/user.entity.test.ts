@@ -6,7 +6,7 @@ describe('User', () => {
   it('validate success', async () => {
     const user = new User();
 
-    user.name = 'Ivan Ivanov';
+    user.username = 'Ivan Ivanov';
     user.password = 'password123';
     user.about = 'hello! this is me';
     user.balance = 100;
@@ -19,7 +19,7 @@ describe('User', () => {
   it('validate fail - balance is not integer', async () => {
     const user = new User();
 
-    user.name = 'Ivan Ivanov';
+    user.username = 'Ivan Ivanov';
     user.password = 'password123';
     user.about = 'this is me';
     user.balance = 10.5;
@@ -36,7 +36,7 @@ describe('User', () => {
   it('validate fail - balance is negative', async () => {
     const user = new User();
 
-    user.name = 'Ivan Ivanov';
+    user.username = 'Ivan Ivanov';
     user.password = 'password123';
     user.about = 'this is me';
     user.balance = -10;
@@ -50,10 +50,10 @@ describe('User', () => {
     });
   });
 
-  it('validate fail - name is empty', async () => {
+  it('validate fail - username is empty', async () => {
     const user = new User();
 
-    user.name = '';
+    user.username = '';
     user.password = 'password123';
     user.about = 'this is me';
     user.balance = 100;
@@ -61,16 +61,16 @@ describe('User', () => {
     const errors = await validate(user);
 
     expect(errors).toHaveLength(1);
-    expect(errors[0].property).toEqual('name');
+    expect(errors[0].property).toEqual('username');
     expect(errors[0].constraints).toEqual({
-      isNotEmpty: 'name should not be empty',
+      isNotEmpty: 'username should not be empty',
     });
   });
 
   it('validate fail - password is empty', async () => {
     const user = new User();
 
-    user.name = 'Ivan Ivanov';
+    user.username = 'Ivan Ivanov';
     user.password = '';
     user.about = 'this is me';
     user.balance = 100;
@@ -85,7 +85,7 @@ describe('User', () => {
   it('validate fail - password is too short', async () => {
     const user = new User();
 
-    user.name = 'Ivan Ivanov';
+    user.username = 'Ivan Ivanov';
     user.password = '12345';
     user.about = 'this is me';
     user.balance = 100;

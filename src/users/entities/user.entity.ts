@@ -4,12 +4,12 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
 
   @Column()
   @IsString()
   @IsNotEmpty()
-  name!: string;
+  username!: string;
 
   @Column()
   @IsString()

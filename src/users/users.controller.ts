@@ -11,7 +11,6 @@ import {
   Body,
   Delete,
   Param,
-  ParseIntPipe,
   NotFoundException,
   Patch,
   Inject,
@@ -28,7 +27,7 @@ import type { TransferBalanceDto } from './dto/transferBalance.dto';
 import type { UpdateUserDto } from './dto/updateUser.dto';
 import type { User } from './entities/user.entity';
 
-const getCacheKey = (id: number) => {
+const getCacheKey = (id: string) => {
   return `users:${id}`;
 };
 
@@ -57,7 +56,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  public async removeById(@Param('id', ParseIntPipe) id: number) {
+  public async removeById(@Param('id') id: string) {
     const isExist = await this.usersService.findById(id);
 
     if (isExist === null) {
@@ -69,7 +68,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  public async findById(@Param('id') id: number) {
+  public async findById(@Param('id') id: string) {
     const cacheKey = getCacheKey(id);
 
     const cachedUser = await this.cache.get<User>(cacheKey);
@@ -87,7 +86,7 @@ export class UsersController {
 
   @Patch(':id')
   public async updateById(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() user: UpdateUserDto,
   ) {
     const isExist = await this.usersService.findById(id);
@@ -115,7 +114,7 @@ export class UsersController {
     return this.usersService.transferClasses(fromUser, toUser, amount);
   }
 
-  private async invalidateCache(id: number) {
+  private async invalidateCache(id: string) {
     const cacheKey = getCacheKey(id);
 
     await this.cache.del(ALL_CACHE_KEY);
