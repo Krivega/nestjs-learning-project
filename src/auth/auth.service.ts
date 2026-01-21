@@ -29,10 +29,7 @@ export class AuthService {
 
     /* В идеальном случае пароль обязательно должен быть захэширован */
     if (user?.password === password) {
-      /* Исключаем пароль из результата */
-      const { password: passwordRemoved, ...result } = user;
-
-      return result;
+      return user;
     }
 
     return undefined;

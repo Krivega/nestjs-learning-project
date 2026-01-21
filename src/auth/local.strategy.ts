@@ -26,6 +26,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException();
     }
 
-    return user;
+    /* Исключаем пароль из результата по соображениям безопасности */
+    const { password: passwordRemoved, ...result } = user;
+
+    return result;
   }
 }
