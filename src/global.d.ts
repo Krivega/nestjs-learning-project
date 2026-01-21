@@ -1,17 +1,17 @@
 /// <reference types="jest" />
 
-export interface JwtUser {
-  id: number;
-  username: string;
-  password: string;
-  about: string;
-  balance: number;
-}
+import type { User } from './users/entities/user.entity';
+
+/**
+ * Тип пользователя в req.user после аутентификации
+ * Исключаем password по соображениям безопасности
+ */
+export type AuthenticatedUser = Omit<User, 'password'>;
 
 declare global {
   namespace Express {
     interface Request {
-      user?: JwtUser;
+      user?: AuthenticatedUser;
     }
   }
 }

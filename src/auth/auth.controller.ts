@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/class-methods-use-this */
 import {
   Controller,
   Body,
@@ -5,7 +6,9 @@ import {
   UseGuards,
   Req,
   UnauthorizedException,
+  Get,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { LocalGuard } from '@/guards/local.guard';
 import { CreateUserDto } from '@/users/dto/createUser.dto';
@@ -35,6 +38,24 @@ export class AuthController {
     }
 
     /* Генерируем для пользователя JWT-токен */
+    return this.authService.auth(user);
+  }
+
+  @UseGuards(AuthGuard('yandex'))
+  @Get('yandex')
+  public yandex() {
+    /* Этот метод можно оставить пустым, так как Passport перенаправит пользователя в Яндекс */
+  }
+
+  @UseGuards(AuthGuard('yandex'))
+  @Get('yandex/callback')
+  public yandexCallback(@Req() req: Request) {
+    const { user } = req;
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
     return this.authService.auth(user);
   }
 

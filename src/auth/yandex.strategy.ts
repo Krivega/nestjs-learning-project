@@ -31,6 +31,9 @@ export class YandexStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException();
     }
 
-    return user;
+    /* Исключаем пароль из результата по соображениям безопасности */
+    const { password, ...result } = user;
+
+    return result;
   }
 }
